@@ -8,6 +8,7 @@ use App\Models\User;
 use Hash;
 use Illuminate\Support\Facades\Auth;
 use Session;
+use App\Models\Role;
 
 class AuthController extends Controller
 {
@@ -26,10 +27,12 @@ class AuthController extends Controller
             'password'=>'required|min:6'
         ]);
 
+        $user_role = Role::where('name', 'user')->value('id');
         $user = User::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'password' => Hash::make($request->input('password')),
+            'role_id' => $user_role,
         ]);
 
         $token = $user->createToken('myapptoken')->plainTextToken;
@@ -40,11 +43,11 @@ class AuthController extends Controller
         ];
 
         // return response($response, 201);
-        return view('main'); 
+        return view('main');
     }
 
     public function login(Request $request){
-        
+
         $request->validate([
             'email'=>'required',
             'password'=>'required',
@@ -59,9 +62,9 @@ class AuthController extends Controller
                 'user' => $user,
                 'token' => $token
             ];
-            
-            // return response($response, 201); 
-            return redirect('/');           
+
+            // return response($response, 201);
+            return redirect('/');
         }
 
         return response([
