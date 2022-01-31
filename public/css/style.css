@@ -8,6 +8,12 @@ body{
     justify-content: space-evenly;
 }
 
+.hello {
+    display: block;
+    width: 500px;
+    margin: 40px auto 0;
+}
+
 a {
     text-decoration: none;
     color: black;
